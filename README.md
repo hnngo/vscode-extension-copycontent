@@ -20,9 +20,22 @@ Example clipboard output:
 
 ## 🛠 Installation
 
-1. Download the `.vsix` file.
-2. Open Command Palette (`Cmd + Shift + P`).
-3. Select **Extensions: Install from VSIX...** and choose the file.
+1. Install the VSCE tool globally if you haven't already:
+
+```bash
+npm install -g @vscode/vsce
+```
+
+2. Navigate to the extension folder and run:
+
+```bash
+vsce package
+```
+
+This will generate a `.vsix` file.
+
+3. Open Command Palette.
+4. Select **Extensions: Install from VSIX...** and choose the generated file.
 
 ## 📂 How to Use
 
