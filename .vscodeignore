@@ -1,0 +1,16 @@
+# Ignore node modules
+node_modules
+
+# Ignore tests
+test
+tests
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore VSCode settings
+.vscode
+
+# Ignore other dev files
+README.md

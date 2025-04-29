@@ -1,0 +1,42 @@
+{
+  "name": "copy-file-content",
+  "displayName": "Copy File Content",
+  "description": "Copy file contents with relative paths to clipboard.",
+  "version": "0.0.1",
+  "publisher": "hnngo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hnngo/vscode-extension-copycontent"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.copyContent"
+  ],
+  "main": "extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.copyContent",
+        "title": "Copy Content"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.copyContent",
+          "when": "explorerResourceIsFolder == false",
+          "group": "clipboard"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "vscode": "^1.1.39"
+  }
+}
