@@ -2,7 +2,7 @@
   "name": "copy-file-content",
   "displayName": "Copy File Content",
   "description": "Copy file contents with relative paths to clipboard.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "hnngo",
   "repository": {
     "type": "git",
@@ -24,6 +24,10 @@
       {
         "command": "extension.copyContent",
         "title": "Copy Content"
+      },
+      {
+        "command": "extension.copyPathTree",
+        "title": "Copy Path Tree"
       }
     ],
     "menus": {
@@ -32,6 +36,11 @@
           "command": "extension.copyContent",
           "when": "resourceScheme == 'file'",
           "group": "clipboard"
+        },
+        {
+          "command": "extension.copyPathTree",
+          "when": "resourceLangId",
+          "group": "navigation"
         }
       ]
     }

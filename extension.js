@@ -30,9 +30,35 @@ function activate(context) {
   });
 
   context.subscriptions.push(copyContentCommand);
+
+  const copyPathTreeCommand = vscode.commands.registerCommand('extension.copyPathTree', async (fileUri, selectedUris) => {
+    const uris = selectedUris || [fileUri];
+
+    if (!uris || uris.length === 0) {
+      vscode.window.showErrorMessage('No files selected.');
+      return;
+    }
+
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath;
+
+    if (!workspaceFolder) {
+      vscode.window.showErrorMessage('No workspace opened.');
+      return;
+    }
+
+    try {
+      const treeString = await generatePathTree(uris, workspaceFolder);
+      await vscode.env.clipboard.writeText(treeString);
+      vscode.window.showInformationMessage('Copied file path tree to clipboard!');
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to copy path tree: ${error.message}`);
+    }
+  });
+
+  context.subscriptions.push(copyPathTreeCommand);
 }
 
-function deactivate() {}
+function deactivate() { }
 
 /**
  * Recursively gathers all files from selected URIs
@@ -98,6 +124,47 @@ function buildCombinedFileContent(workspaceFolder, filePaths) {
 
   return result;
 }
+
+async function generatePathTree(uris, basePath) {
+  let result = '';
+
+  for (const uri of uris) {
+    const absolutePath = uri.fsPath;
+    const stat = fs.statSync(absolutePath);
+
+    if (stat.isDirectory()) {
+      result += await buildTree(absolutePath, basePath);
+    } else {
+      const relativePath = path.relative(basePath, absolutePath);
+      result += `${relativePath}\n`;
+    }
+  }
+
+  return result.trim();
+}
+
+function buildTree(dirPath, basePath, prefix = '') {
+  let tree = '';
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  const total = entries.length;
+
+  entries.forEach((entry, index) => {
+    const fullPath = path.join(dirPath, entry.name);
+    const relativePath = path.relative(basePath, fullPath);
+    const isLast = index === total - 1;
+    const branch = isLast ? '└── ' : '├── ';
+    const subPrefix = isLast ? '    ' : '│   ';
+
+    tree += `${prefix}${branch}${entry.name}\n`;
+
+    if (entry.isDirectory()) {
+      tree += buildTree(fullPath, basePath, prefix + subPrefix);
+    }
+  });
+
+  return tree;
+}
+
 
 module.exports = {
   activate,
