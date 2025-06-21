@@ -14,7 +14,7 @@ function activate(context) {
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath;
 
     if (!workspaceFolder) {
-      vscode.window.showErrorMessage('No workspace opened.');
+      vscode.window.showErrorMessage('No workspace open.');
       return;
     }
 
@@ -42,7 +42,7 @@ function activate(context) {
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath;
 
     if (!workspaceFolder) {
-      vscode.window.showErrorMessage('No workspace opened.');
+      vscode.window.showErrorMessage('No workspace open.');
       return;
     }
 
